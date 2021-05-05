@@ -1,0 +1,74 @@
+// Add some header info
+// For TM template code
+
+// Video
+let video;
+let classifier;
+let label = 'waiting';
+let results;
+let questionImage;
+let qu;
+// STEP 1: Load the model!
+function preload()
+{
+questionImage = loadImage('Question.png');
+   qu = loadImage('no_question.png');
+  classifier = ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/Az4mPLxif/model.json')
+  
+}
+function setup() {
+  createCanvas(640, 520);
+  // Create the video
+  video = createCapture(VIDEO);
+  video.hide();
+
+
+  // STEP 2: Start classifying
+
+clasifyvideo();
+}
+// STEP 2 classify!
+function clasifyvideo(){
+  classifier.classify(video, Gotresults);
+}
+
+
+function draw() {
+  background(0);
+  
+  // Draw the video
+  image(video, 0, 0);
+  
+
+   
+
+  // STEP 4: Draw the label
+  textSize(32);
+  textAlign(CENTER,CENTER);
+  fill(255);
+  text(label,width/2,height-15);
+
+}
+    if (label == "Hånd oppe") 
+  {image(questionImage, 50, 50);
+  }else if (label == "Hånd nede"){
+    image(qu, 50, 50);
+  
+
+}
+// STEP 3: Get the classification!
+function Gotresults (error, results){
+  if (error){
+    console.error(error);
+    return
+    
+  }  
+    console.log(results[0].label);
+    label = (results[0].label);
+    clasifyvideo();
+}
+  
+ 
+
+  
+    
